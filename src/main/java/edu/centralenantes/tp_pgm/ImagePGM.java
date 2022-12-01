@@ -125,10 +125,30 @@ public class ImagePGM {
                         for (int l=0; l<factor; l++){
                             res.bitmap[i+k][j+l]=bitmap[i][j];
                         }
-                        
                     }
                 }
             }
+        } else if (factor < 0){
+            int posFactor = -factor;
+            newWidth = width/posFactor;
+            newHeight = height/posFactor;
+            res = new ImagePGM(newWidth, newHeight, maxLevel);
+            int sum = 0;
+            for (int i=0; i<newWidth; i++){
+                for (int j=0; j<newHeight; j++){
+                    sum = 0;
+                    for (int k=0; k<posFactor; k++){
+                        for (int l=0; l<posFactor; l++){
+                            if (i+k<width && j+l<height){
+                                sum += bitmap[i+k][j+l];
+                            }
+                        }
+                    }
+                    res.getBitmap()[i][j] = sum/(posFactor*posFactor);
+                }
+            }
+        } else {
+            //TODO throw error invalid size
         }
         return res;
     }
