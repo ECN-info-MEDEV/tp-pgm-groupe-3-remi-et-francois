@@ -5,11 +5,14 @@
 package edu.centralenantes.tp_pgm;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,12 +21,18 @@ import javax.swing.JFileChooser;
 public class Window extends javax.swing.JFrame {
     
     
-    private Image currentImage;
+    private ImagePGM currentImage;
+    private ImagePGM newImage;
     /**
      * Creates new form Window
      */
     public Window() {
         initComponents();
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
+        int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
+        this.setLocation(x, y);
+        
     }
 
     /**
@@ -37,13 +46,16 @@ public class Window extends javax.swing.JFrame {
 
         fileName = new javax.swing.JLabel();
         currentFile = new javax.swing.JLabel();
+        newFile = new javax.swing.JLabel();
+        newFileInfo = new javax.swing.JLabel();
         MenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         open = new javax.swing.JMenuItem();
         save = new javax.swing.JMenuItem();
-        saveAs = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
+        treatment = new javax.swing.JMenu();
         histogram = new javax.swing.JMenuItem();
+        resize = new javax.swing.JMenuItem();
+        seuil = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,6 +64,11 @@ public class Window extends javax.swing.JFrame {
 
         currentFile.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         currentFile.setText("Current File");
+
+        newFile.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        newFile.setText("New File");
+
+        newFileInfo.setText("None");
 
         fileMenu.setText("File");
 
@@ -71,17 +88,25 @@ public class Window extends javax.swing.JFrame {
         });
         fileMenu.add(save);
 
-        saveAs.setText("Save as");
-        fileMenu.add(saveAs);
-
         MenuBar.add(fileMenu);
 
-        editMenu.setText("Edit");
+        treatment.setText("Treatment");
 
         histogram.setText("Generate histogram");
-        editMenu.add(histogram);
+        treatment.add(histogram);
 
-        MenuBar.add(editMenu);
+        resize.setText("Resize");
+        treatment.add(resize);
+
+        seuil.setText("Seuil");
+        seuil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                seuilActionPerformed(evt);
+            }
+        });
+        treatment.add(seuil);
+
+        MenuBar.add(treatment);
 
         setJMenuBar(MenuBar);
         MenuBar.getAccessibleContext().setAccessibleName("");
@@ -92,9 +117,15 @@ public class Window extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(currentFile)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(currentFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(newFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(fileName, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(newFileInfo)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(fileName, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -104,7 +135,11 @@ public class Window extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fileName)
                     .addComponent(currentFile))
-                .addContainerGap(377, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(newFile)
+                    .addComponent(newFileInfo))
+                .addContainerGap(376, Short.MAX_VALUE))
         );
 
         pack();
@@ -116,10 +151,14 @@ public class Window extends javax.swing.JFrame {
         if (res == JFileChooser.APPROVE_OPTION){
             File file = fileExplorer.getSelectedFile();
             try {
-                Image img = new Image(file);
+                ImagePGM img = new ImagePGM(file);
                 currentImage = img;
-                String name = file.getName();
-                fileName.setText(name);
+                String info = file.getName()+"  "+img.getWidth()+"X"+img.getWidth();
+                fileName.setText(info);
+                // Reset
+                newFileInfo.setText("None");
+                newImage = null;
+                
                 
             } catch (Exception ex) {
                 Logger.getLogger(TP_PGM.class.getName()).log(Level.SEVERE, null, ex);
@@ -128,8 +167,22 @@ public class Window extends javax.swing.JFrame {
     }//GEN-LAST:event_openActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
-        
+        JFileChooser fileExplorer = new JFileChooser();
+        int res = fileExplorer.showOpenDialog(null);
+        if (res == JFileChooser.APPROVE_OPTION) {
+            File file = fileExplorer.getSelectedFile();
+            //newImage.save(file);
+        }
     }//GEN-LAST:event_saveActionPerformed
+
+    private void seuilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seuilActionPerformed
+        String seuil = JOptionPane.showInputDialog("Entrer la valeur du seuil (entre 0 et 255)");
+        newImage = currentImage.seuillage(seuil);
+        if (newImage != null) {
+            this.newFileInfo.setText("Seuil "+seuil+"  "+newImage.getWidth()+"X"+newImage.getHeight());
+        }
+        
+    }//GEN-LAST:event_seuilActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,13 +222,16 @@ public class Window extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar MenuBar;
     private javax.swing.JLabel currentFile;
-    private javax.swing.JMenu editMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JLabel fileName;
     private javax.swing.JMenuItem histogram;
+    private javax.swing.JLabel newFile;
+    private javax.swing.JLabel newFileInfo;
     private javax.swing.JMenuItem open;
+    private javax.swing.JMenuItem resize;
     private javax.swing.JMenuItem save;
-    private javax.swing.JMenuItem saveAs;
+    private javax.swing.JMenuItem seuil;
+    private javax.swing.JMenu treatment;
     // End of variables declaration//GEN-END:variables
 
 }
