@@ -71,8 +71,8 @@ public class ImagePGM {
                 ind++;
             }
         }
-    }       
-
+    }
+    
     /**
      *
      * @return Matrice de pixels
