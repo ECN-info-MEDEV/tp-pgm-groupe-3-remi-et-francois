@@ -84,6 +84,7 @@ public class ImagePGM {
                 ind++;
             }
         }
+
     }       
     
      /**
