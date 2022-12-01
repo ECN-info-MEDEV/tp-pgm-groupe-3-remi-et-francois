@@ -22,7 +22,7 @@ public class TP_PGM {
         if (res == JFileChooser.APPROVE_OPTION){
             File file = fileExplorer.getSelectedFile();
             try {
-                Image img = new Image(file);
+                ImagePGM img = new ImagePGM(file);
             } catch (Exception ex) {
                 Logger.getLogger(TP_PGM.class.getName()).log(Level.SEVERE, null, ex);
             }
