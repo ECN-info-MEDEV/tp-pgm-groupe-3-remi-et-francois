@@ -28,5 +28,7 @@ public class TP_PGM {
             }
         }
         
+        Window w = new Window();
+        w.setVisible(true);
     }
 }
