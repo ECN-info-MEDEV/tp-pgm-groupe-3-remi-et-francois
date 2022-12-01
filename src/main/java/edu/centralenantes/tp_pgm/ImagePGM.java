@@ -14,7 +14,7 @@ import java.io.IOException;
  *
  * @author inky19
  */
-public class Image {
+public class ImagePGM {
 
     private int[][] bitmap;                // Matrice des pixels
     private final int width;               // Largeur de l'image
@@ -29,20 +29,29 @@ public class Image {
      * @throws IOException
      * @throws Exception
      */
-    public Image(File file) throws FileNotFoundException, IOException, Exception{
+    public ImagePGM(File file) throws FileNotFoundException, IOException, Exception{
         BufferedReader reader = new BufferedReader(new FileReader(file)); 
         String line = reader.readLine(); // Ligne P2
         line = reader.readLine();        // Ligne de commentaire
         line = reader.readLine();        // Ligne de dimensions
         String[] dataLine = line.split(SEP);
-        width = Integer.parseInt(dataLine[0]);
-        height = Integer.parseInt(dataLine[1]);
+        int ind = 0; // Indice pour parcourir une ligne de données du fichier
+        // Les boucles while ont pour but de gérer les espaces inutiles sur la ligne de dimensions
+        while(dataLine[ind].isEmpty()){
+            ind++;
+        }
+        width = Integer.parseInt(dataLine[ind]);
+        ind++;
+        while(dataLine[ind].isEmpty()){
+            ind++;
+        }
+        height = Integer.parseInt(dataLine[ind]);
         bitmap = new int[width][height];
         line = reader.readLine();
         maxLevel = Integer.parseInt(line);
         line = reader.readLine();
         dataLine = line.split(SEP);
-        int ind = 0; // Indice pour parcourir une ligne de données du fichier
+        ind = 0;
         for (int i=0; i<width; i++){
             for (int j=0; j<height; j++){
                 if (ind>=dataLine.length){ // Passe à la ligne suivante dans le fichier
