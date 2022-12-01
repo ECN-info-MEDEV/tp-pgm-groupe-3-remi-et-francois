@@ -176,10 +176,12 @@ public class Window extends javax.swing.JFrame {
     }//GEN-LAST:event_saveActionPerformed
 
     private void seuilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seuilActionPerformed
-        String seuil = JOptionPane.showInputDialog("Entrer la valeur du seuil (entre 0 et 255)");
-        newImage = currentImage.seuillage(seuil);
-        if (newImage != null) {
-            this.newFileInfo.setText("Seuil "+seuil+"  "+newImage.getWidth()+"X"+newImage.getHeight());
+        if (currentImage != null) {
+            String seuil_value = JOptionPane.showInputDialog("Entrer la valeur du seuil (entre 0 et 255)");
+            newImage = currentImage.Seuillage(Integer.parseInt(seuil_value));
+            if (newImage != null) {
+                this.newFileInfo.setText("Seuil "+ seuil_value +"  "+newImage.getWidth()+"X"+newImage.getHeight());
+            }
         }
         
     }//GEN-LAST:event_seuilActionPerformed

@@ -23,6 +23,19 @@ public class ImagePGM {
     private static final String SEP = " "; // Délimiteur dans le format de fichier .pgm
     
     /**
+     * 
+     * @param width Largeur de l'image
+     * @param height Hauteur de l'image
+     * @param maxLevel Niveau maximum de gris
+     */
+    public ImagePGM(int width, int height, int maxLevel){
+        this.width = width;
+        this.height = height;
+        this.maxLevel = maxLevel;
+        bitmap = new int[width][height];
+    }
+    
+    /**
      *
      * @param file Fichier à charger
      * @throws FileNotFoundException
@@ -71,6 +84,53 @@ public class ImagePGM {
                 ind++;
             }
         }
+
+    }       
+    
+     /**
+     * Fonction de sueillage
+     * @param threshold Seuil
+     * @return Image binarisée de même dimensions 
+     */
+    public ImagePGM Seuillage(int threshold){
+        ImagePGM res = new ImagePGM(width, height, 255);
+        for (int i=0; i<width; i++){
+            for (int j=0; j<height; j++){
+                if (bitmap[i][j] > threshold){
+                    res.getBitmap()[i][j] = 255;
+                } else {
+                    res.getBitmap()[i][j] = 0;
+                }
+            }
+        }
+        return res;
+    }
+    
+    /**
+     * Redimenssione l'image
+     * @param factor Facteur entier. Agrandit si positif, réduit si négatif.
+     * @return 
+     */
+    public ImagePGM Resize(int factor){
+        ImagePGM res = null;
+        int newWidth = 0;
+        int newHeight = 0;
+        if (factor > 0){ // Agrandissement
+            newWidth = width*factor;
+            newHeight = height*factor;
+            res = new ImagePGM(newWidth, newHeight, maxLevel);
+            for (int i=0; i<width; i++){
+                for (int j=0; j<height; j++){
+                    for (int k=0; k<factor; k++){
+                        for (int l=0; l<factor; l++){
+                            res.bitmap[i+k][j+l]=bitmap[i][j];
+                        }
+                        
+                    }
+                }
+            }
+        }
+        return res;
     }
     
     /**
