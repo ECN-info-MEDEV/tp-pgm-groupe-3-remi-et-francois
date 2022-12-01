@@ -6,13 +6,19 @@ package edu.centralenantes.tp_pgm;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 
 /**
  *
  * @author remir
  */
 public class Window extends javax.swing.JFrame {
-
+    
+    
+    private Image currentImage;
     /**
      * Creates new form Window
      */
@@ -105,11 +111,24 @@ public class Window extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void openActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fileExplorer = new JFileChooser();
+        int res = fileExplorer.showOpenDialog(null);
+        if (res == JFileChooser.APPROVE_OPTION){
+            File file = fileExplorer.getSelectedFile();
+            try {
+                Image img = new Image(file);
+                currentImage = img;
+                String name = file.getName();
+                fileName.setText(name);
+                
+            } catch (Exception ex) {
+                Logger.getLogger(TP_PGM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_openActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
-
+        
     }//GEN-LAST:event_saveActionPerformed
 
     /**
