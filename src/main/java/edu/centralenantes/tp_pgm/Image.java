@@ -16,12 +16,19 @@ import java.io.IOException;
  */
 public class Image {
 
-    private int[][] bitmap;
-    private final int width;
-    private final int height;
-    private final int maxLevel;
-    private static final String SEP = " ";
+    private int[][] bitmap;                // Matrice des pixels
+    private final int width;               // Largeur de l'image
+    private final int height;              // Hauteur de l'image
+    private final int maxLevel;            // Niveau maximum de gris
+    private static final String SEP = " "; // Délimiteur dans le format de fichier .pgm
     
+    /**
+     *
+     * @param file Fichier à charger
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws Exception
+     */
     public Image(File file) throws FileNotFoundException, IOException, Exception{
         BufferedReader reader = new BufferedReader(new FileReader(file)); 
         String line = reader.readLine(); // Ligne P2
@@ -35,44 +42,56 @@ public class Image {
         maxLevel = Integer.parseInt(line);
         line = reader.readLine();
         dataLine = line.split(SEP);
-        int ind = 0;
+        int ind = 0; // Indice pour parcourir une ligne de données du fichier
         for (int i=0; i<width; i++){
             for (int j=0; j<height; j++){
-                if (ind>=dataLine.length){
+                if (ind>=dataLine.length){ // Passe à la ligne suivante dans le fichier
                     ind = 0;
                     line = reader.readLine();
                     if (line.isEmpty()){
                         throw new Exception("La taille déclarée ("+width+"x"+height+") ne correspond pas. Le fichier est peut être corrompu");
                     }
                     dataLine = line.split(SEP);
-                    System.out.println("DATA SIZE = " + dataLine.length);
                 }
-                while(ind < dataLine.length && dataLine[ind].isEmpty()){
+                while(ind < dataLine.length && dataLine[ind].isEmpty()){ // Permet de gérer les doubles espaces ou les espaces en début de ligne
                     ind++;
                 }
-                if (!dataLine[ind].isEmpty()){
-                    System.out.println(line);
-                    System.out.println(dataLine[ind]);
+                if (!dataLine[ind].isEmpty()){ // Condition pour gérer les espaces en fin de ligne
                     bitmap[i][j]=Integer.parseInt(dataLine[ind]);
                 }
-
                 ind++;
             }
         }
     }       
 
+    /**
+     *
+     * @return Matrice de pixels
+     */
     public int[][] getBitmap() {
         return bitmap;
     }
 
+    /**
+     *
+     * @return Largeur de l'image
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     *
+     * @return Hauteur de l'image
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     *
+     * @return Niveau maximum de gris
+     */
     public int getMaxLevel() {
         return maxLevel;
     }
