@@ -12,6 +12,7 @@ package edu.centralenantes.tp_pgm;
 public class TP_PGM {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Window w = new Window();
+        w.setVisible(true);
     }
 }
