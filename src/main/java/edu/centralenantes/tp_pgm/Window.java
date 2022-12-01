@@ -18,7 +18,7 @@ import javax.swing.JFileChooser;
 public class Window extends javax.swing.JFrame {
     
     
-    private Image currentImage;
+    private ImagePGM currentImage;
     /**
      * Creates new form Window
      */
@@ -116,7 +116,7 @@ public class Window extends javax.swing.JFrame {
         if (res == JFileChooser.APPROVE_OPTION){
             File file = fileExplorer.getSelectedFile();
             try {
-                Image img = new Image(file);
+                ImagePGM img = new ImagePGM(file);
                 currentImage = img;
                 String name = file.getName();
                 fileName.setText(name);
