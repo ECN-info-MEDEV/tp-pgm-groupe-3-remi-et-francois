@@ -5,9 +5,11 @@
 package edu.centralenantes.tp_pgm;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -104,6 +106,40 @@ public class ImagePGM {
             }
         }
         return res;
+    }
+    
+    public void save(File file) throws IOException{
+        BufferedWriter fileBuffer = new BufferedWriter(new FileWriter(file.getAbsolutePath()));
+        fileBuffer.write("P2");
+        fileBuffer.newLine();
+        fileBuffer.write("#");
+        fileBuffer.newLine();
+        fileBuffer.write("" + width + " " + height);
+        fileBuffer.newLine();
+        fileBuffer.write(String.valueOf(maxLevel));
+        fileBuffer.newLine();
+        int ind = 0;
+        String value = "";
+        String line = "";
+        for (int i=0; i<width; i++){
+            for (int j=0; j<height; j++){
+                value = String.valueOf(bitmap[i][j]);
+                while (value.length() < 3){
+                    value = " "+value;
+                }
+                value = " "+value;
+                line += value;
+                ind++;
+                if (ind > 15){
+                    ind = 0;
+                    fileBuffer.write(line);
+                    fileBuffer.newLine();
+                    line = "";
+                }
+            }
+        }
+        fileBuffer.flush();
+        fileBuffer.close();
     }
     
     /**

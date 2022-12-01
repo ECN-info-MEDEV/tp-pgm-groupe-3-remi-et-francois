@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -171,7 +172,11 @@ public class Window extends javax.swing.JFrame {
         int res = fileExplorer.showOpenDialog(null);
         if (res == JFileChooser.APPROVE_OPTION) {
             File file = fileExplorer.getSelectedFile();
-            //newImage.save(file);
+            try {
+                newImage.save(file);
+            } catch (IOException ex) {
+                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_saveActionPerformed
 
