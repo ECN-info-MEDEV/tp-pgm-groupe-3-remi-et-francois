@@ -16,18 +16,7 @@ import javax.swing.JFileChooser;
  */
 public class TP_PGM {
 
-    public static void main(String[] args) {
-        JFileChooser fileExplorer = new JFileChooser();
-        int res = fileExplorer.showOpenDialog(null);
-        if (res == JFileChooser.APPROVE_OPTION){
-            File file = fileExplorer.getSelectedFile();
-            try {
-                Image img = new Image(file);
-            } catch (Exception ex) {
-                Logger.getLogger(TP_PGM.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
+    public static void main(String[] args) {      
         Window w = new Window();
         w.setVisible(true);
     }
