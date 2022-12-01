@@ -153,6 +153,14 @@ public class ImagePGM {
         return res;
     }
     
+    
+    public ImagePGM Difference(ImagePGM img) {   
+        ImagePGM diff = new ImagePGM(width, height, maxLevel);
+        return diff;
+    }
+    
+    
+    
     /**
      *
      * @return Matrice de pixels

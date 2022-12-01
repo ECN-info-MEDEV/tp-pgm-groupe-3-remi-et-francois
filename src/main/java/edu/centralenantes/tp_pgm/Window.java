@@ -96,6 +96,11 @@ public class Window extends javax.swing.JFrame {
         treatment.add(histogram);
 
         resize.setText("Resize");
+        resize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resizeActionPerformed(evt);
+            }
+        });
         treatment.add(resize);
 
         seuil.setText("Seuil");
@@ -185,6 +190,16 @@ public class Window extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_seuilActionPerformed
+
+    private void resizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resizeActionPerformed
+        if (currentImage != null) {
+            String factor_value = JOptionPane.showInputDialog("Entrer la valeur du facteur");
+            newImage = currentImage.Resize(Integer.parseInt(factor_value));
+            if (newImage != null) {
+                this.newFileInfo.setText("Resize "+ factor_value +"  "+newImage.getWidth()+"X"+newImage.getHeight());
+            }
+        }
+    }//GEN-LAST:event_resizeActionPerformed
 
     /**
      * @param args the command line arguments
