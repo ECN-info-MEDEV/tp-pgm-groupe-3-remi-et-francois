@@ -52,14 +52,11 @@ public class Image {
                         throw new Exception("La taille déclarée ("+width+"x"+height+") ne correspond pas. Le fichier est peut être corrompu");
                     }
                     dataLine = line.split(SEP);
-                    System.out.println("DATA SIZE = " + dataLine.length);
                 }
                 while(ind < dataLine.length && dataLine[ind].isEmpty()){ // Permet de gérer les doubles espaces ou les espaces en début de ligne
                     ind++;
                 }
                 if (!dataLine[ind].isEmpty()){ // Condition pour gérer les espaces en fin de ligne
-                    System.out.println(line);
-                    System.out.println(dataLine[ind]);
                     bitmap[i][j]=Integer.parseInt(dataLine[ind]);
                 }
                 ind++;
