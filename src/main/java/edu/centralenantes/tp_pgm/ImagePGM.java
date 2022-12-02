@@ -67,8 +67,8 @@ public class ImagePGM {
         line = reader.readLine();
         dataLine = line.split(SEP);
         ind = 0;
-        for (int i=0; i<width; i++){
-            for (int j=0; j<height; j++){
+        for (int j=0; j<height; j++){
+            for (int i=0; i<width; i++){
                 if (ind>=dataLine.length){ // Passe à la ligne suivante dans le fichier
                     ind = 0;
                     line = reader.readLine();
@@ -121,8 +121,8 @@ public class ImagePGM {
         int ind = 0;
         String value = "";
         String line = "";
-        for (int i=0; i<width; i++){
-            for (int j=0; j<height; j++){
+        for (int j=0; j<height; j++){
+            for (int i=0; i<width; i++){
                 value = String.valueOf(bitmap[i][j]);
                 while (value.length() < 3){
                     value = " "+value;
@@ -137,6 +137,9 @@ public class ImagePGM {
                     line = "";
                 }
             }
+        }
+        if (!line.equals("")){
+            fileBuffer.write(line);
         }
         fileBuffer.flush();
         fileBuffer.close();
@@ -159,11 +162,12 @@ public class ImagePGM {
                 for (int j=0; j<height; j++){
                     for (int k=0; k<factor; k++){
                         for (int l=0; l<factor; l++){
-                            res.bitmap[i+k][j+l]=bitmap[i][j];
+                            res.bitmap[i*factor+k][j*factor+l]=bitmap[i][j];
                         }
                     }
                 }
             }
+            
         } else if (factor < 0){
             int posFactor = -factor;
             newWidth = width/posFactor;
@@ -173,14 +177,16 @@ public class ImagePGM {
             for (int i=0; i<newWidth; i++){
                 for (int j=0; j<newHeight; j++){
                     sum = 0;
+                    int nbOfPixels = 0;
                     for (int k=0; k<posFactor; k++){
                         for (int l=0; l<posFactor; l++){
-                            if (i+k<width && j+l<height){
-                                sum += bitmap[i+k][j+l];
+                            if (i*posFactor+k<width && j*posFactor+l<height){
+                                sum += bitmap[i*posFactor+k][j*posFactor+l];
+                                nbOfPixels++;
                             }
                         }
                     }
-                    res.getBitmap()[i][j] = sum/(posFactor*posFactor);
+                    res.getBitmap()[i][j] = sum/nbOfPixels;
                 }
             }
         } else {
